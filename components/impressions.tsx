@@ -1,23 +1,24 @@
-'use client';
+"use client";
 
-import {
-  useContext,
-  useEffect,
-} from 'react';
+import { useEffect } from 'react';
 
-import { PersonalizeContext } from './context/PersonalizeContext';
+import { usePersonalize } from './context/PersonalizeContext';
 
-export const Impressions = ({ experienceShortUids }: { experienceShortUids: string[] }) => {
-  const Personalize = useContext(PersonalizeContext);
+export const Impressions = ({
+  experienceShortUids,
+}: {
+  experienceShortUids: string[];
+}) => {
+  const personalizeSdk = usePersonalize();
+
   useEffect(() => {
     async function runEffect() {
-      experienceShortUids
-        .forEach(async (experienceShortUid) => {
-          await Personalize.triggerImpression(experienceShortUid);
-        });
+      experienceShortUids.forEach(async (experienceShortUid) => {
+        await personalizeSdk?.triggerImpression(experienceShortUid);
+      });
     }
     runEffect();
-  }, []);
+  }, [personalizeSdk]);
 
   return <></>;
-}
+};
